@@ -1,9 +1,42 @@
 const Skill = require('../models/skill');
+const { render } = require('../server');
 
 module.exports = {
   index,
-  show
+  show,
+  new: newSkill,
+  create,
+  delete: deleteSkill,
+  edit,
+  update
 };
+
+function update(req, res) {
+  req.body.done = !!req.body.done;
+  Skill.update(req.params.id, req.body);
+  res.redirect(`/skills/${req.params.id}`);
+}
+
+function edit(req, res) {
+  const skill = skill.getOne(req.params.id);
+  res.render('skills/edit', { skill });
+
+}
+
+function deleteSkill(req, res) {
+  Skill.deleteOne(req.params.skillgone);
+  res.redirect('/skills');
+}
+
+
+function create(req, res) {
+  Skill.create(req.body);
+  res.redirect('/skills');
+}
+
+function newSkill(req, res) {
+  res.render('skills/new');
+}
 
 function show(req, res) {
   // Access all route params using req.params (object)
